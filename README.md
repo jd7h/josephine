@@ -1,2 +1,2 @@
 # josephine
-Book catalogue system
+Book catalogue system in Python/Django.
