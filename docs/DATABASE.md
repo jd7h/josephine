@@ -8,9 +8,14 @@ Borrowed from Hans de Zwart's booklist and GoodReads. :)
 ```
 Book:
 mandatory information:
-title: char[255] seems like a safe option. The longest title in my goodreads library (1000+ titles) is 162 character. The guiness book of records lists 11,000+ chars as the longest title ever, but that seems overkill?
-author: list of Author objects? or just full names as strings char[255] and that's it? If we include information about gender, nationality, etc, in an Author object we could generate cool "reading bias" statistics >:) (can we get this via GoodReads?)
+title: char[255] 
+author: char[255]
+```
+For the title, char[255] seems like a safe option. The longest title in my goodreads library (1000+ titles) is 162 characters. The Guinness Book of Records lists 11,000+ chars as the longest title ever, but that seems overkill?
 
+For authors: Do we want Author objects or just the name as a string? If we include information about gender, nationality, etc, in an Author object we could generate cool "reading bias" statistics >:) (can we get this via GoodReads?). Filing this as a nice-to-have for now.
+
+```
 optional fields:
 language: is there a standard way to encode languages?
 num_pages: integer
@@ -24,6 +29,9 @@ ISBN13:
 What do we do with editions? What if two users have read the same title but different editions? Are updates about a particular edition? Maybe add a 'default' edition? 
 
 ## Shelf
+
+Or: category, tag, booklist, ...
+Going with Shelf because that's the name in my head, courtesy of GR. ;)
 ```
 Shelf:
 name: char[255]
