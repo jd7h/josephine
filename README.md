@@ -23,6 +23,7 @@ pip install -r requirements.txt
 3. Set up configfile, sqlite3 database and admin account
 ```
 cp josephine/settings.example.py josephine/settings.py
+python manage.py makemigrations
 python manage.py migrate
 python manage.py createsuperuser
 ```
