@@ -12,6 +12,9 @@ class Book(models.Model):
 class Status(models.Model):
     status_name = models.CharField(max_length=50)
 
+    class Meta:
+        verbose_name_plural = "status"
+
     def __str__(self):
         return self.status_name
 
