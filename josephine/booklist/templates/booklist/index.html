@@ -1,0 +1,15 @@
+<h1>Josephine</h1>
+    Hello, world. This is the index of josephine.
+    <br>
+    <br>
+    <h2>Latest books</h2>
+
+{% if latest_books %}
+    <ul>
+    {% for book in latest_books %}
+        <li><a href="/books/{{ book.id }}/">{{ book }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No books are available.</p>
+{% endif %}
