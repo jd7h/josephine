@@ -55,6 +55,7 @@ class Rating(models.Model):
 
     rating = models.IntegerField(choices=StarRating.choices)
     book = models.OneToOneField(Book, on_delete=models.CASCADE, primary_key=True)
-   
+
     def __str__(self):
         return str(self.rating) + " stars for " + str(self.book)
+
