@@ -1,9 +1,19 @@
 from django.db import models
 import datetime
 
+class Shelf(models.Model):
+    name = models.CharField(max_length=50)
+
+    class Meta:
+        verbose_name_plural = "shelves"
+
+    def __str__(self):
+        return self.name
+
 class Book(models.Model):
     title = models.CharField(max_length=255)
     author = models.CharField(max_length=255)
+    shelves = models.ManyToManyField(Shelf)
 
     def __str__(self):
         return self.author + " - " + self.title
