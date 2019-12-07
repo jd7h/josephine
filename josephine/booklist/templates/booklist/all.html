@@ -1,0 +1,11 @@
+<h2>All books</h2>
+
+{% if books %}
+    <ul>
+    {% for book in books %}
+        <li><a href="/books/{{ book.id }}/">{{ book }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No books found.</p>
+{% endif %}

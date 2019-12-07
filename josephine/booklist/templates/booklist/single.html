@@ -1,0 +1,40 @@
+<h2>{{ book.title }} </h2>
+
+<h3>Book info</h3>
+<ul>
+<li>Title: {{book.title}}</li>
+<li>Author: {{book.author}}</li>
+{% if current_status %}<li>Current status: {{ current_status.new_status }}</li>{% endif %}
+{% if rating %}<li>Rating: {{ rating.rating }} stars</li>{% endif %}
+</ul>
+
+
+{% if book.shelves %}
+<h3>Shelves</h3>
+<ul>
+{% for shelf in book.shelves.iterator %}
+<li>{{shelf}}</li>
+{% endfor %}
+</ul>
+{% endif %}
+
+
+{% if readdates %}
+<h3>Date read</h3>
+<ul>
+{% for date in readdates %}
+<li>{{date.date }}</li>
+{% endfor %}
+</ul>
+{% endif %}
+
+{% if statusupdates %}
+<h3>Status updates</h3>
+<ul>
+{% for update in statusupdates %}
+<li>{{ update.date.date }}: {{ update.new_status }}</li>
+{% endfor %}
+</ul>
+{% endif %}
+
+<a href="/books/all">Show all books</li>
