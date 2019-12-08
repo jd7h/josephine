@@ -13,7 +13,7 @@ class Shelf(models.Model):
 class Book(models.Model):
     title = models.CharField(max_length=255)
     author = models.CharField(max_length=255)
-    shelves = models.ManyToManyField(Shelf)
+    shelves = models.ManyToManyField(Shelf, blank=True)
 
     def __str__(self):
         return self.author + " - " + self.title
