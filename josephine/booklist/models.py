@@ -20,13 +20,13 @@ class Book(models.Model):
 
 
 class Status(models.Model):
-    status_name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50)
 
     class Meta:
         verbose_name_plural = "status"
 
     def __str__(self):
-        return self.status_name
+        return self.name
 
 class StatusUpdate(models.Model):
     date = models.DateTimeField()
@@ -58,4 +58,3 @@ class Rating(models.Model):
 
     def __str__(self):
         return str(self.rating) + " stars for " + str(self.book)
-

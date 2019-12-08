@@ -57,7 +57,7 @@ def status(request, status_id):
         .annotate(last_update=Max("statusupdate__date"))\
         .filter(Q(statusupdate__new_status=status_id)&Q(statusupdate__date=F("last_update")))
     context = {
-        'shelf_name' : status.status_name,
+        'shelf_name' : status.name,
         'shelf_books' : books
     }
     return render(request, 'booklist/shelf.html', context)
