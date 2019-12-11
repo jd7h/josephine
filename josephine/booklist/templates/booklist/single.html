@@ -19,19 +19,19 @@
 {% endif %}
 
 
-{% if readdates %}
+{% if read_dates %}
 <h3>Date read</h3>
 <ul>
-{% for date in readdates %}
+{% for date in read_dates %}
 <li>{{date.date }}</li>
 {% endfor %}
 </ul>
 {% endif %}
 
-{% if statusupdates %}
+{% if status_updates %}
 <h3>Status updates</h3>
 <ul>
-{% for update in statusupdates %}
+{% for update in status_updates %}
 <li>{{ update.date.date }}: {{ update.new_status }}</li>
 {% endfor %}
 </ul>

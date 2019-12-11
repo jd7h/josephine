@@ -18,6 +18,18 @@ class Book(models.Model):
     def __str__(self):
         return self.author + " - " + self.title
 
+    def getRatings(self):
+        return Rating.objects.filter(book_id=self.id)
+
+    def getReadDates(self):
+        return ReadDate.objects.filter(book_id=self.id)
+
+    def getCurrentStatus(self):
+        return self.getStatusUpdates().latest('date')
+
+    def getStatusUpdates(self):
+        return StatusUpdate.objects.order_by('date').filter(book_id=self.id)
+
 
 class Status(models.Model):
     name = models.CharField(max_length=50)

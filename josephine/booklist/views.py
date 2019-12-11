@@ -16,16 +16,11 @@ def detail(request, book_id):
     book = get_object_or_404(Book, pk=book_id)
     context = {
         'book' : book,
+        'rating' : book.getRatings().first(),
+        'current_status' : book.getCurrentStatus(),
+        'status_updates' : book.getStatusUpdates(),
+        'read_dates' : book.getReadDates()
     }
-    if ReadDate.objects.filter(book=book_id).count() > 0:
-        context.update({"readdates" : ReadDate.objects.filter(book=book_id)})
-    statusupdates = StatusUpdate.objects.order_by('date').filter(book=book_id)
-    if statusupdates.count() > 0:
-        context.update({"statusupdates" : statusupdates})
-        current_status = statusupdates.latest('date')
-        context.update({'current_status' : current_status})
-    if Rating.objects.filter(book_id=book_id).count() > 0:
-        context.update({ "rating" : Rating.objects.filter(book_id=book_id).first() })
     return render(request, 'booklist/single.html', context)
 
 def all(request):
