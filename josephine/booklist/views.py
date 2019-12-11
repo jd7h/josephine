@@ -1,25 +1,19 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, Http404
 from django.template import loader
 
 from .models import Book, Shelf, Status, ReadDate, StatusUpdate, Rating
 from django.db.models import Max, Q, F
 
-# Create your views here.
 def index(request):
     latest_books = Book.objects.order_by('id')[:5]
-    template = loader.get_template('booklist/index.html')
     context = {
         'latest_books' : latest_books,
     }
-    output = "<br>".join([str(book) for book in latest_books])
-    return HttpResponse(template.render(context, request))
+    return render(request, 'booklist/index.html', context)
 
 def detail(request, book_id):
-    try:
-        book = Book.objects.get(pk=book_id)
-    except Question.DoesNotExist:
-        raise Http404("This book does not exist")
+    book = get_object_or_404(Book, pk=book_id)
     context = {
         'book' : book,
     }
@@ -49,10 +43,7 @@ def edit(request, book_id):
     return HttpResponse("You're editing book %s." % book_id)
 
 def status(request, status_id):
-    try:
-        status = Status.objects.get(pk=status_id)
-    except Status.DoesNotExist:
-        raise Http404("This status does not exist")
+    status = get_object_or_404(Status, pk=status_id)
     books = Book.objects\
         .annotate(last_update=Max("statusupdate__date"))\
         .filter(Q(statusupdate__new_status=status_id)&Q(statusupdate__date=F("last_update")))
@@ -63,10 +54,7 @@ def status(request, status_id):
     return render(request, 'booklist/shelf.html', context)
 
 def shelf(request, shelf_id):
-    try:
-        shelf = Shelf.objects.get(pk=shelf_id)
-    except Shelf.DoesNotExist:
-        raise Http404("This shelf does not exist")
+    shelf = get_object_or_404(Shelf, pk=shelf_id)
     books = Book.objects.filter(shelves=shelf_id)
     context = {
         'shelf_name' : shelf.name,
