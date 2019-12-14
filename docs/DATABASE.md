@@ -28,6 +28,9 @@ ISBN13:
 
 What do we do with editions? What if two users have read the same title but different editions? Are updates about a particular edition? Maybe add a 'default' edition? 
 
+ISBN (from [wikipedia](https://en.wikipedia.org/wiki/International_Standard_Book_Number):
+"An ISBN is assigned to each separate edition and variation (except reprintings) of a publication. For example, an e-book, a paperback and a hardcover edition of the same book will each have a different ISBN. The ISBN is ten digits long if assigned before 2007, and thirteen digits long if assigned on or after 1 January 2007."
+
 ## Shelf
 
 Or: category, tag, booklist, ...
