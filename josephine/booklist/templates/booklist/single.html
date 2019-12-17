@@ -4,6 +4,15 @@
 <ul>
 <li>Title: {{book.title}}</li>
 <li>Author: {{book.author}}</li>
+{% if book.orig_title %}<li>Original title: {{book.orig_title}}</li>{% endif %}
+{% if book.ISBN13 %}<li>ISBN13: {{book.ISBN13}}</li>{% endif %}
+{% if book.ISBN10 %}<li>ISBN10: {{book.ISBN10}}</li>{% endif %}
+{% if book.lang %}<li>Language: {{book.lang}}</li>{% endif %}
+{% if book.publisher %}<li>Publisher: {{book.publisher}}</li>{% endif %}
+{% if book.binding %}<li>Binding: {{book.binding}}</li>{% endif %}
+{% if book.pages %}<li>Pages: {{book.pages}}</li>{% endif %}
+{% if book.pubdate %}<li>Publication date: {{book.pubdate}}</li>{% endif %}
+{% if book.summary %}<li>Summary: {{book.summary}}</li>{% endif %}
 {% if current_status %}<li>Current status: {{ current_status.new_status }}</li>{% endif %}
 {% if rating %}<li>Rating: {{ rating.rating }} stars</li>{% endif %}
 </ul>

@@ -16,16 +16,14 @@ class Book(models.Model):
     author = models.CharField(max_length=255)
 
     orig_title = models.CharField(max_length=255, blank=True)
-    ISBN13 = models.PositiveIntegerField(unique=True, blank=True)
-    ISBN10 = models.PositiveIntegerField(unique=True, blank=True)
+    ISBN13 = models.CharField(max_length=13, unique=True, blank=True, null=True)
+    ISBN10 = models.CharField(max_length=10, unique=True, blank=True, null=True)
     publisher = models.CharField(max_length=255, blank=True)
-    pages = models.PositiveIntegerField(blank=True)
-    pubdate = models.DateField(blank=True)
+    pages = models.PositiveIntegerField(blank=True, null=True)
+    pubdate = models.DateField(blank=True, null=True)
     binding = models.CharField(max_length=255, blank=True)
     summary = models.CharField(max_length=2000, blank=True)
-    lang = LanguageField(blank=True)
-
-    shelves = models.ManyToManyField(Shelf, blank=True)
+    lang = LanguageField(blank=True, null=True)
 
     def __str__(self):
         return self.author + " - " + self.title
