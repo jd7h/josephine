@@ -7,7 +7,7 @@
 {% if latest_books %}
     <ul>
     {% for book in latest_books %}
-        <li><a href="/books/{{ book.id }}/">{{ book }}</a></li>
+        <li><a href="{% url 'detail' book.id %}">{{ book }}</a></li>
     {% endfor %}
     </ul>
 {% else %}
