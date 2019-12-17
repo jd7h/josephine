@@ -25,6 +25,8 @@ class Book(models.Model):
     summary = models.CharField(max_length=2000, blank=True)
     lang = LanguageField(blank=True, null=True)
 
+    shelves = models.ManyToManyField(Shelf, blank=True)
+
     def __str__(self):
         return self.author + " - " + self.title
 
