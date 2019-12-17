@@ -1,4 +1,5 @@
 from django.db import models
+from languages.fields import LanguageField
 import datetime
 
 class Shelf(models.Model):
@@ -13,6 +14,17 @@ class Shelf(models.Model):
 class Book(models.Model):
     title = models.CharField(max_length=255)
     author = models.CharField(max_length=255)
+
+    orig_title = models.CharField(max_length=255, blank=True)
+    ISBN13 = models.PositiveIntegerField(unique=True, blank=True)
+    ISBN10 = models.PositiveIntegerField(unique=True, blank=True)
+    publisher = models.CharField(max_length=255, blank=True)
+    pages = models.PositiveIntegerField(blank=True)
+    pubdate = models.DateField(blank=True)
+    binding = models.CharField(max_length=255, blank=True)
+    summary = models.CharField(max_length=2000, blank=True)
+    lang = LanguageField(blank=True)
+
     shelves = models.ManyToManyField(Shelf, blank=True)
 
     def __str__(self):
