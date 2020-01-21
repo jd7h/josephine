@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.template import loader
+from django.urls import reverse
 
 from .models import Book, Shelf, Status, ReadDate, StatusUpdate, Rating
 from django.db.models import Max, Q, F
@@ -36,6 +37,28 @@ def all(request):
 
 def edit(request, book_id):
     return HttpResponse("You're editing book %s." % book_id)
+
+def rate(request, book_id):
+    book = get_object_or_404(Book, pk=book_id)
+    int_rating = int(request.POST['stars']) #post values are always a string
+    try:
+        star_rating = Rating.StarRating(int_rating)
+    except ValueError:
+        return render(request, 'books/detail.html', {
+            'book': book,
+            'error_message': "You didn't select a valid rating for the book.",
+        })
+    if book.getRatings().exists():
+        r = book.getRatings().first()
+        r.rating = star_rating
+        r.save()
+    else: # create new Rating
+        r = Rating(book=book, rating=star_rating)
+        r.save()
+    # Always return an HttpResponseRedirect after successfully dealing
+    # with POST data. This prevents data from being posted twice if a
+    # user hits the Back button.
+    return HttpResponseRedirect(reverse('booklist:detail', args=(book.id,)))
 
 def status(request, status_id):
     status = get_object_or_404(Status, pk=status_id)
