@@ -15,8 +15,8 @@
 {% if book.pages %}<li>Pages: {{book.pages}}</li>{% endif %}
 {% if book.pubdate %}<li>Publication date: {{book.pubdate}}</li>{% endif %}
 {% if book.summary %}<li>Summary: {{book.summary}}</li>{% endif %}
-{% if current_status %}<li>Current status: {{ current_status.new_status }}</li>{% endif %}
-{% if rating %}<li>Rating: {{ rating.rating }} stars</li>{% endif %}
+{% if current_status %}<li>Current status: {{ current_status }}</li>{% endif %}
+{% if rating %}<li>Rating: {{ rating }} stars</li>{% endif %}
 </ul>
 
 
@@ -43,7 +43,7 @@
 <h3>Status updates</h3>
 <ul>
 {% for update in status_updates %}
-<li>{{ update.date.date }}: {{ update.new_status }}</li>
+<li>{{ update.date.date }}: {{ update.description }}</li>
 {% endfor %}
 </ul>
 {% endif %}

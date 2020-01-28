@@ -2,9 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.template import loader
 from django.urls import reverse
-
-from .models import Book, Shelf, Status, ReadDate, StatusUpdate, Rating
-from django.db.models import Max, Q, F
+from .models import Book, Shelf, Status, ReadDate, Update
 
 def index(request):
     latest_books = Book.objects.order_by('id')[:5]
@@ -17,9 +15,9 @@ def detail(request, book_id):
     book = get_object_or_404(Book, pk=book_id)
     context = {
         'book' : book,
-        'rating' : book.getRatings().first(),
-        'current_status' : book.getCurrentStatus(),
-        'status_updates' : book.getStatusUpdates(),
+        'rating' : book.getRating(),
+        'current_status' : book.getStatus(),
+        'status_updates' : book.getUpdates(),
         'read_dates' : book.getReadDates()
     }
     return render(request, 'booklist/single.html', context)
@@ -42,19 +40,16 @@ def rate(request, book_id):
     book = get_object_or_404(Book, pk=book_id)
     int_rating = int(request.POST['stars']) #post values are always a string
     try:
-        star_rating = Rating.StarRating(int_rating)
+        star_rating = Book.StarRating(int_rating)
     except ValueError:
         return render(request, 'books/detail.html', {
             'book': book,
             'error_message': "You didn't select a valid rating for the book.",
         })
-    if book.getRatings().exists():
-        r = book.getRatings().first()
-        r.rating = star_rating
-        r.save()
-    else: # create new Rating
-        r = Rating(book=book, rating=star_rating)
-        r.save()
+    book.rating = star_rating
+    update = Update(book_id=book.id, description="has new rating " + str(star_rating) + " stars")
+    book.save()
+    update.save()
     # Always return an HttpResponseRedirect after successfully dealing
     # with POST data. This prevents data from being posted twice if a
     # user hits the Back button.
@@ -62,9 +57,7 @@ def rate(request, book_id):
 
 def status(request, status_id):
     status = get_object_or_404(Status, pk=status_id)
-    books = Book.objects\
-        .annotate(last_update=Max("statusupdate__date"))\
-        .filter(Q(statusupdate__new_status=status_id)&Q(statusupdate__date=F("last_update")))
+    books = Book.objects.filter(status=status_id)
     context = {
         'shelf_name' : status.name,
         'shelf_books' : books

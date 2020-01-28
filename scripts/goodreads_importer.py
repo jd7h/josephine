@@ -7,7 +7,7 @@ import sys, os, django
 sys.path.append("josephine/")
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "josephine.settings")
 django.setup()
-from booklist.models import Book, Status, StatusUpdate, Shelf, ReadDate, Rating
+from booklist.models import Book, Status, Shelf, ReadDate, Update
 
 def string_to_shelf(shelfname, exclusive=True):
     if exclusive: 
@@ -16,24 +16,21 @@ def string_to_shelf(shelfname, exclusive=True):
         model = Shelf
     # idea for preprocessing: translate hyphens to spaces
     shelfname = re.sub("-"," ",shelfname)
-    shelves = model.objects.filter(name__startswith=shelfname)
-    if shelves.count() > 0:
-        return shelves[0].id
-    else:
-        shelf = model(name=shelfname)
-        shelf.save()
-        return shelf.id
+    shelf, created = model.objects.get_or_create(name=shelfname)
+    return shelf
 
 def goodreads_record_to_book(record):
+    # exclusive shelf = status
+    status = string_to_shelf(record['Exclusive Shelf'], exclusive=True)
     # title and author
-    book = Book(title=record['Title'], author=record['Author'])
+    book = Book(title=record['Title'], author=record['Author'], status=status)
     print(book)
     book.save()
-    # exclusive shelf = status
-    status_id = string_to_shelf(record['Exclusive Shelf'], exclusive=True)
-    statusupdate = StatusUpdate(new_status_id=status_id, book_id=book.id, date=timezone.now())
-    print(statusupdate)
-    statusupdate.save()
+    update = Update(book_id=book.id, date=timezone.now(), description="imported from GoodReads")
+    update.save()
+    update = Update(book_id=book.id, date=timezone.now(), description="has new status " + status.name)
+    print(update)
+    update.save()
     # non-exclusive shelves
     GRshelves = record['Bookshelves'].split(", ")
     # exclusive shelves are also sometimes included in this field :/
@@ -49,9 +46,14 @@ def goodreads_record_to_book(record):
     # rating
     GRrating = int(record['My Rating'])
     if GRrating > 0:
-        rating = Rating(rating=GRrating, book_id=book.id)
-        print(rating)
-        rating.save()
+        try:
+            book.rating = Book.StarRating(GRrating)
+            book.save()
+            update = Update(book_id=book.id, date=timezone.now(), description="has new rating " + str(book.rating) + " stars")
+            print(update)
+            update.save()
+        except ValueError:
+            pass
     # date read (GoodReads provides only the last date read in the csv...)
     if record["Date Read"] != "":
         date_read = datetime.datetime.strptime(record["Date Read"], "%Y/%m/%d")

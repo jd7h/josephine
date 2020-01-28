@@ -1,6 +1,6 @@
 from django.db import models
 from languages.fields import LanguageField
-import datetime
+from datetime import datetime
 
 class Shelf(models.Model):
     name = models.CharField(max_length=50)
@@ -11,10 +11,32 @@ class Shelf(models.Model):
     def __str__(self):
         return self.name
 
+class Status(models.Model):
+    name = models.CharField(max_length=50)
+
+    class Meta:
+        verbose_name_plural = "status"
+
+    def __str__(self):
+        return self.name
+
+def get_default_status():
+    return Status.objects.get_or_create(name="to read")[0]
+
 class Book(models.Model):
+    class StarRating(models.IntegerChoices):
+        ONE_STAR = 1
+        TWO_STARS = 2
+        THREE_STARS = 3
+        FOUR_STARS = 4
+        FIVE_STARS = 5
+
+    # mandatory fields
     title = models.CharField(max_length=255)
     author = models.CharField(max_length=255)
+    status = models.ForeignKey('Status',default=get_default_status, on_delete=models.SET_DEFAULT)
 
+    # optional fields
     orig_title = models.CharField(max_length=255, blank=True)
     ISBN13 = models.CharField(max_length=13, unique=True, blank=True, null=True)
     ISBN10 = models.CharField(max_length=10, unique=True, blank=True, null=True)
@@ -27,39 +49,23 @@ class Book(models.Model):
 
     shelves = models.ManyToManyField(Shelf, blank=True)
 
+    rating = models.IntegerField(choices=StarRating.choices, blank=True, null=True)
+
     def __str__(self):
         return self.author + " - " + self.title
 
-    def getRatings(self):
-        return Rating.objects.filter(book_id=self.id)
+    def getRating(self):
+        return self.rating
 
     def getReadDates(self):
         return ReadDate.objects.filter(book_id=self.id)
 
-    def getCurrentStatus(self):
-        return self.getStatusUpdates().latest('date')
+    def getStatus(self):
+        return self.status
 
-    def getStatusUpdates(self):
-        return StatusUpdate.objects.order_by('date').filter(book_id=self.id)
+    def getUpdates(self):
+        return Update.objects.filter(book_id=self.id)
 
-
-class Status(models.Model):
-    name = models.CharField(max_length=50)
-
-    class Meta:
-        verbose_name_plural = "status"
-
-    def __str__(self):
-        return self.name
-
-class StatusUpdate(models.Model):
-    date = models.DateTimeField()
-    book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    new_status = models.ForeignKey(Status, on_delete=models.CASCADE)
-
-    def __str__(self):
-        date_repr = self.date.strftime("%d %b %Y")
-        return date_repr + ": " + str(self.book) + " has new status " + str(self.new_status)
 
 class ReadDate(models.Model):
     date = models.DateField()
@@ -69,16 +75,13 @@ class ReadDate(models.Model):
         date_repr = self.date.strftime("%d %b %Y")
         return date_repr + ": read " + str(self.book)
 
-class Rating(models.Model):
-    class StarRating(models.IntegerChoices):
-        ONE_STAR = 1
-        TWO_STARS = 2
-        THREE_STARS = 3
-        FOUR_STARS = 4
-        FIVE_STARS = 5
-
-    rating = models.IntegerField(choices=StarRating.choices)
-    book = models.OneToOneField(Book, on_delete=models.CASCADE, primary_key=True)
+class Update(models.Model):
+    date = models.DateTimeField(default=datetime.now)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    description = models.CharField(max_length=200)
 
     def __str__(self):
-        return str(self.rating) + " stars for " + str(self.book)
+        date_repr = self.date.strftime("%d %b %Y")
+        return date_repr + ": " + str(self.book) + ": " + self.description
+
+
