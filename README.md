@@ -11,11 +11,10 @@ Installation prerequisites: git, python, sqlite3
 1. Cloning the repo:
 ```
 git clone https://github.com/jd7h/josephine.git
-cd josephine
+cd josephine/josephine
 ```
 2. Create a virtual environment and install dependencies:
 ```
-cd josephine
 python -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
@@ -24,6 +23,7 @@ pip install -r requirements.txt
 ```
 cp josephine/settings.example.py josephine/settings.py
 python manage.py makemigrations
+python manage.py makemigrations booklist
 python manage.py migrate
 python manage.py createsuperuser
 ```
