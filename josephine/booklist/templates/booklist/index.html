@@ -1,17 +1,24 @@
+{% include "header.html" %}
+
 {% include "menu.html" %}
 
+<div id="content">
+<div id="main_column">
 <h1>Josephine</h1>
     Hello, world. This is the index of josephine.
     <br>
     <br>
+
+<div id="books">
     <h2>Latest books</h2>
 
 {% if latest_books %}
-    <ul>
     {% for book in latest_books %}
-        <li><a href="{% url 'booklist:detail' book.id %}">{{ book }}</a></li>
+        <div class="single-book"><a href="{% url 'booklist:detail' book.id %}">{{ book }}</a></div>
     {% endfor %}
-    </ul>
 {% else %}
     <p>No books are available.</p>
 {% endif %}
+</div>
+</div>
+</div>

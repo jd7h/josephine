@@ -1,51 +1,50 @@
+{% include "header.html" %}
+
 {% include "menu.html" %}
 
+{% load static %}
+
+<div id="content">
+
+<div id="main_column">
 <h2>{{ book.title }} </h2>
 
 <h3>Book info</h3>
-<ul>
-<li>Title: {{book.title}}</li>
-<li>Author: {{book.author}}</li>
-{% if book.orig_title %}<li>Original title: {{book.orig_title}}</li>{% endif %}
-{% if book.ISBN13 %}<li>ISBN13: {{book.ISBN13}}</li>{% endif %}
-{% if book.ISBN10 %}<li>ISBN10: {{book.ISBN10}}</li>{% endif %}
-{% if book.lang %}<li>Language: {{book.lang}}</li>{% endif %}
-{% if book.publisher %}<li>Publisher: {{book.publisher}}</li>{% endif %}
-{% if book.binding %}<li>Binding: {{book.binding}}</li>{% endif %}
-{% if book.pages %}<li>Pages: {{book.pages}}</li>{% endif %}
-{% if book.pubdate %}<li>Publication date: {{book.pubdate}}</li>{% endif %}
-{% if book.summary %}<li>Summary: {{book.summary}}</li>{% endif %}
-{% if current_status %}<li>Current status: {{ current_status }}</li>{% endif %}
-{% if rating %}<li>Rating: {{ rating }} stars</li>{% endif %}
-</ul>
+<div class="book_property">Title: {{book.title}}</div>
+<div class="book_property">Author: {{book.author}}</div>
+{% if book.orig_title %}<div class="book_property">Original title: {{book.orig_title}}</div>{% endif %}
+{% if book.ISBN13 %}<div class="book_property">ISBN13: {{book.ISBN13}}</div>{% endif %}
+{% if book.ISBN10 %}<div class="book_property">ISBN10: {{book.ISBN10}}</div>{% endif %}
+{% if book.lang %}<div class="book_property">Language: {{book.lang}}</div>{% endif %}
+{% if book.publisher %}<div class="book_property">Publisher: {{book.publisher}}</div>{% endif %}
+{% if book.binding %}<div class="book_property">Binding: {{book.binding}}</div>{% endif %}
+{% if book.pages %}<div class="book_property">Pages: {{book.pages}}</div>{% endif %}
+{% if book.pubdate %}<div class="book_property">Publication date: {{book.pubdate}}</div>{% endif %}
+{% if book.summary %}<div class="book_property">Summary: {{book.summary}}</div>{% endif %}
+{% if current_status %}<div class="book_property">Current status: {{ current_status }}</div>{% endif %}
+{% if rating %}<div class="book_property">Rating: {{ rating }} stars</div>{% endif %}
 
 
 {% if book.shelves %}
 <h3>Shelves</h3>
-<ul>
 {% for shelf in book.shelves.iterator %}
-<li>{{shelf}}</li>
+<div class="book_property">{{shelf}}</div>
 {% endfor %}
-</ul>
 {% endif %}
 
 
 {% if read_dates %}
 <h3>Date read</h3>
-<ul>
 {% for date in read_dates %}
-<li>{{date.date }}</li>
+<div class="book_property">{{date.date }}</div>
 {% endfor %}
-</ul>
 {% endif %}
 
 {% if status_updates %}
 <h3>Status updates</h3>
-<ul>
 {% for update in status_updates %}
-<li>{{ update.date.date }}: {{ update.description }}</li>
+<div class="book_property">{{ update.date.date }}: {{ update.description }}</div>
 {% endfor %}
-</ul>
 {% endif %}
 
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
@@ -62,4 +61,14 @@
 <input type="submit" value="Rate">
 </form>
 
-<a href="{% url 'booklist:all' %}">Show all books</li>
+<a href="{% url 'booklist:all' %}">Show all books</a>
+</div>
+
+<div id="right_bar">
+{% if book.cover %}
+<img class="bookcover" src="{{book.cover.url}}" />
+{% endif %}
+</div>
+
+</div>
+</div>

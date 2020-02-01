@@ -1,13 +1,19 @@
+{% include "header.html" %}
+
 {% include "menu.html" %}
 
+<div id="content">
+<div id="main_column">
 <h2>All books</h2>
 
+<div id="books">
 {% if books %}
-    <ul>
     {% for book in books %}
-        <li><a href="{% url 'booklist:detail' book.id %}">{{ book }}</a></li>
+        <div class="single-book"><a href="{% url 'booklist:detail' book.id %}">{{ book }}</a></div>
     {% endfor %}
-    </ul>
 {% else %}
     <p>No books found.</p>
 {% endif %}
+</div>
+</div>
+</div>

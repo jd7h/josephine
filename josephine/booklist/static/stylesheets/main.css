@@ -1,0 +1,135 @@
+body
+{
+  color:#333;
+  margin-left:20px;
+  font-size:13px;
+  font-family: helvetica, sans-serif;
+  word-wrap:break-word;
+  text-align:center;
+}
+
+
+
+blockquote 
+{ 
+    margin-left:20px;
+    margin-bottom:0px;
+    color:#247;
+}
+
+#content
+{ 
+    width:1050px;
+    margin-left:auto;
+    margin-right:auto 
+
+}
+
+/* basic elements */
+td { font-size:13px; }
+p  { margin-top:2px;margin-bottom:12px }
+li { margin-bottom:10px }
+
+
+/* global link styling */
+a
+{ 
+    text-decoration:none;
+    color:#11a;
+}
+a:visited { color:#51a }
+a.edit { font-size:1em; }
+
+h1 
+{ 
+    font-size:2em;
+    font-family:helvetica;
+    font-weight:normal;
+    margin-top:10px;
+} 
+h2 { 
+    font-size:1.3em;
+    font-family:helvetica;
+    font-weight:normal;
+} 
+h3 { font-size:110%;background:#eaefff;} 
+h4 { font-size:100%;background:#dfc;} 
+
+code
+{
+  margin-left:20px;
+  color:#22a;
+  font-family:monaco;
+}
+
+
+
+/* MAIN BANNER AND NAV */
+#banner
+{
+  background:white;
+  color:black;
+  border-bottom:1px dotted #aaa;
+  margin-bottom:0.7em;
+  width:980px;
+  padding-bottom:9px;
+  text-align:left;
+}
+
+
+#banner a { color:#aaa; }
+#banner a.admin { color:#e00 }
+#banner a.banner_username { color:blue; }
+#pinboard_name { font-size:18px; }
+
+
+#logo { float:left;width:325px;color:#aaa;}
+.pin_logo { margin-right:2px; }
+#top_menu 
+{ 
+    margin-top:2px;
+    float:right; 
+}
+#top_menu a { color:blue }
+
+
+/* user alert */
+.alert 
+{ 
+    color:#333;
+    background:#ced;
+    padding:10px;
+    width:550px;
+    border:1px solid #acc; 
+}
+
+
+#login_box
+{
+  float:right;
+}
+
+
+/* BASIC PAGE STRUCTURE */
+#main_column
+{
+    width:700px;
+    min-height:700px;
+    text-align:left;
+    float:left;
+    position:relative;
+    #border:1px solid #fa8;
+
+}
+
+#right_bar 
+{
+    float:left;
+    margin-left:10px;
+    text-align:left;
+    width:330px;
+    #border:1px solid #cfd;
+}
+
+
+
