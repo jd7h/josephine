@@ -72,3 +72,7 @@ def shelf(request, shelf_id):
         'shelf_books' : books
     }
     return render(request, 'booklist/shelf.html', context)
+
+def random(request):
+    random_book = Book.objects.order_by('?').first() # this is slow if you're book db is large
+    return HttpResponseRedirect(reverse('booklist:detail', args=(random_book.id,)))
