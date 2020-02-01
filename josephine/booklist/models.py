@@ -46,6 +46,7 @@ class Book(models.Model):
     binding = models.CharField(max_length=255, blank=True)
     summary = models.CharField(max_length=2000, blank=True)
     lang = LanguageField(blank=True, null=True)
+    cover = models.ImageField(upload_to='covers/', blank=True, null=True)
 
     shelves = models.ManyToManyField(Shelf, blank=True)
 
