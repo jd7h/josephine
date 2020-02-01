@@ -21,7 +21,7 @@ class Status(models.Model):
         return self.name
 
 def get_default_status():
-    return Status.objects.get_or_create(name="to read")[0]
+    return Status.objects.get_or_create(name="to read")[0].id
 
 class Book(models.Model):
     class StarRating(models.IntegerChoices):
@@ -45,7 +45,7 @@ class Book(models.Model):
     pubdate = models.DateField(blank=True, null=True)
     binding = models.CharField(max_length=255, blank=True)
     summary = models.CharField(max_length=2000, blank=True)
-    lang = LanguageField(blank=True, null=True)
+    lang = LanguageField(blank=True, null=True, max_length=10)
     cover = models.ImageField(upload_to='covers/', blank=True, null=True)
 
     shelves = models.ManyToManyField(Shelf, blank=True)
