@@ -1,11 +1,16 @@
 <div id="menu">
 <h2>Menu</h2>
-<a href={% url 'booklist:index' %}>Home</a>
+<a href="{% url 'booklist:index' %}">Home</a>
  ‧ 
-<a href={% url 'booklist:all' %}>All books</a>
+<a href="{% url 'booklist:all' %}">All books</a>
  ‧ 
-<a href={% url 'booklist:random' %}>Random book</a>
+<a href="{% url 'booklist:random' %}">Random book</a>
  ‧ 
 <a href="/admin">Django admin</a>
+ ‧ 
+<form style="display:inline;" action="{% url 'booklist:search_results' %}" method="get">
+  <input name="q" type="text" placeholder="Search...">
+</form>
+
 </div>
 <hr>

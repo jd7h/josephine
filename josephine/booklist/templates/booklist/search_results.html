@@ -1,0 +1,16 @@
+{% include "header.html" %}
+
+{% include "menu.html" %}
+
+<div id="content">
+<div id="main_column">
+
+<h2>Search Results</h2>
+
+  {% for book in object_list %}
+      <div class="search_result"><a href="{% url 'booklist:detail' book.id %}">{{ book }}</a></div>
+  {% endfor %}
+</ul>
+
+</div>
+</div>

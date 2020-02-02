@@ -3,6 +3,9 @@ from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.template import loader
 from django.urls import reverse
 from .models import Book, Shelf, Status, ReadDate, Update
+from django.views.generic import ListView
+from django.db.models import Q
+
 
 def index(request):
     latest_books = Book.objects.order_by('id')[:5]
@@ -76,3 +79,14 @@ def shelf(request, shelf_id):
 def random(request):
     random_book = Book.objects.order_by('?').first() # this is slow if you're book db is large
     return HttpResponseRedirect(reverse('booklist:detail', args=(random_book.id,)))
+
+class SearchResultsView(ListView):
+    model = Book
+    template_name = 'booklist/search_results.html'
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        object_list = Book.objects.filter(
+            Q(title__icontains=query) | Q(author__icontains=query)
+        )
+        return object_list
