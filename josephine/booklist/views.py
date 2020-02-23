@@ -77,7 +77,7 @@ def shelf(request, shelf_id):
     return render(request, 'booklist/shelf.html', context)
 
 def random(request):
-    random_book = Book.objects.order_by('?').first() # this is slow if you're book db is large
+    random_book = Book.objects.order_by('?').first() # this is slow if your book db is large
     return HttpResponseRedirect(reverse('booklist:detail', args=(random_book.id,)))
 
 class SearchResultsView(ListView):
