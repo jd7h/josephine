@@ -8,8 +8,15 @@
  ‧ 
 <a href="{% url 'booklist:readinggoal' %}">Reading Challenge</a>
  ‧ 
+{% if user.is_authenticated %}
+Welcome, {{ user.username | title }}
+ ‧ 
 <a href="/admin">Django admin</a>
  ‧ 
+{% else %}
+<a href="/admin">Log in</a>
+ ‧ 
+{% endif %}
 <form style="display:inline;" action="{% url 'booklist:search_results' %}" method="get">
   <input name="q" type="text" placeholder="Search...">
 </form>
