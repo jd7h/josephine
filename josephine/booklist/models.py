@@ -85,4 +85,6 @@ class Update(models.Model):
         date_repr = self.date.strftime("%d %b %Y")
         return date_repr + ": " + str(self.book) + ": " + self.description
 
-
+class ReadingGoal(models.Model):
+    n_books = models.PositiveIntegerField()
+    date_set = models.DateTimeField(default=datetime.now)

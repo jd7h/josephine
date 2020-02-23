@@ -2,9 +2,10 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.template import loader
 from django.urls import reverse
-from .models import Book, Shelf, Status, ReadDate, Update
+from .models import Book, Shelf, Status, ReadDate, Update, ReadingGoal
 from django.views.generic import ListView
 from django.db.models import Q
+import datetime
 
 
 def index(request):
@@ -90,3 +91,12 @@ class SearchResultsView(ListView):
             Q(title__icontains=query) | Q(author__icontains=query)
         )
         return object_list
+
+def readinggoal(request):
+    thisyear = datetime.datetime.now().year
+    goal = ReadingGoal.objects.filter(date_set__year=thisyear)
+    readdates = ReadDate.objects.filter(date__year=thisyear)
+    if goal.exists():
+        return HttpResponse("Your goal is to read %d books in %d. You have read %d books so far." % (goal.first().n_books, thisyear, len(readdates)))
+    else:
+        return HttpResponse("You have not set a reading goal for %d." % thisyear)

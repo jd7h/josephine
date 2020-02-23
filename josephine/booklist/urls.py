@@ -12,4 +12,5 @@ urlpatterns = [
     path('<int:book_id>/rate/', views.rate, name='rate'),
     path('random/', views.random, name='random'),
     path('search/', views.SearchResultsView.as_view(), name='search_results'),
+    path('challenge/', views.readinggoal, name='readinggoal'),
 ]
