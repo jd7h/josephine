@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from languages.fields import LanguageField
 from datetime import datetime
@@ -88,3 +89,10 @@ class Update(models.Model):
 class ReadingGoal(models.Model):
     n_books = models.PositiveIntegerField()
     date_set = models.DateTimeField(default=datetime.now)
+
+class SitePreferences(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    highlight_shelf = models.ForeignKey(Shelf, on_delete=models.SET_NULL, null=True)
+
+    class Meta:
+        verbose_name_plural = "site preferences"

@@ -10,6 +10,13 @@
     <br>
 
 <div id="books">
+{% if highlight_books %}
+    <h2>{{ highlight_shelf | title }}</h2>
+    {% for book in highlight_books %}
+        <div class="single-book"><a href="{% url 'booklist:detail' book.id %}">{{ book }}</a></div>
+    {% endfor %}
+{% endif %}
+
     <h2>Latest books</h2>
 
 {% if latest_books %}

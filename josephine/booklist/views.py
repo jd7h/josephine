@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.template import loader
 from django.urls import reverse
-from .models import Book, Shelf, Status, ReadDate, Update, ReadingGoal
+from .models import Book, Shelf, Status, ReadDate, Update, ReadingGoal, SitePreferences
 from django.views.generic import ListView
 from django.db.models import Q
 import datetime
@@ -13,6 +13,12 @@ def index(request):
     context = {
         'latest_books' : latest_books,
     }
+    if request.user.is_authenticated:
+        if SitePreferences.objects.filter(user=request.user).exists():
+            highlight_shelf = request.user.sitepreferences.highlight_shelf
+            highlight_books = Book.objects.filter(shelves=highlight_shelf)
+            context['highlight_shelf'] = highlight_shelf
+            context['highlight_books'] = highlight_books
     return render(request, 'booklist/index.html', context)
 
 def detail(request, book_id):
