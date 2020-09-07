@@ -49,17 +49,19 @@
 
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
-<h3>Rate this book</h3>
-<form action="{% url 'booklist:rate' book.id %}" method="post">
-{% csrf_token %}
-{% with ''|center:5 as range %}
-{% for _ in range %}
-    <input type="radio" name="stars" id="choice{{ forloop.counter }}" value="{{ forloop.counter }}">
-    <label for="choice{{ forloop.counter }}">{{ forloop.counter }}</label><br>
-{% endfor %}
-{% endwith %}
-<input type="submit" value="Rate">
-</form>
+{% if request.user.is_authenticated %}
+        <h3>Rate this book</h3>
+        <form action="{% url 'booklist:rate' book.id %}" method="post">
+        {% csrf_token %}
+        {% with ''|center:5 as range %}
+        {% for _ in range %}
+            <input type="radio" name="stars" id="choice{{ forloop.counter }}" value="{{ forloop.counter }}">
+            <label for="choice{{ forloop.counter }}">{{ forloop.counter }}</label><br>
+        {% endfor %}
+        {% endwith %}
+        <input type="submit" value="Rate">
+        </form>
+{% endif %}
 
 <a href="{% url 'booklist:all' %}">Show all books</a>
 </div>

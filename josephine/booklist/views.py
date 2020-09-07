@@ -56,22 +56,30 @@ def edit(request, book_id):
 
 def rate(request, book_id):
     book = get_object_or_404(Book, pk=book_id)
-    int_rating = int(request.POST['stars']) #post values are always a string
-    try:
-        star_rating = Book.StarRating(int_rating)
-    except ValueError:
-        return render(request, 'books/detail.html', {
+    if request.user.is_authenticated:
+        int_rating = int(request.POST['stars']) #post values are always a string
+        try:
+            star_rating = Book.StarRating(int_rating)
+        except ValueError:
+            return render(request, 'booklist/single.html', {
+                'book': book,
+                'error_message': "You didn't select a valid rating for the book.",
+            })
+        book.rating = star_rating
+        update = Update(book_id=book.id, description="has new rating " + str(star_rating))
+        book.save()
+        update.save()
+        # Always return an HttpResponseRedirect after successfully dealing
+        # with POST data. This prevents data from being posted twice if a
+        # user hits the Back button.
+        return HttpResponseRedirect(reverse('booklist:detail', args=(book.id,)))
+    elif not request.user.is_authenticated and book.isprivate:
+        raise Http404("No Book matches the given query.")
+    else:
+        return render(request, 'booklist/single.html', {
             'book': book,
-            'error_message': "You didn't select a valid rating for the book.",
+            'error_message': "You don't have permission to edit this book.",
         })
-    book.rating = star_rating
-    update = Update(book_id=book.id, description="has new rating " + str(star_rating) + " stars")
-    book.save()
-    update.save()
-    # Always return an HttpResponseRedirect after successfully dealing
-    # with POST data. This prevents data from being posted twice if a
-    # user hits the Back button.
-    return HttpResponseRedirect(reverse('booklist:detail', args=(book.id,)))
 
 def status(request, status_id):
     status = get_object_or_404(Status, pk=status_id)
