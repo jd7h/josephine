@@ -9,16 +9,17 @@ import datetime
 
 
 def index(request):
-    latest_books = Book.objects.order_by('id')[:5]
-    context = {
-        'latest_books' : latest_books,
-    }
+    context = {}        
     if request.user.is_authenticated:
+        latest_books = Book.objects.order_by('id')[:5]
         if SitePreferences.objects.filter(user=request.user).exists():
             highlight_shelf = request.user.sitepreferences.highlight_shelf
             highlight_books = Book.objects.filter(shelves=highlight_shelf)
             context['highlight_shelf'] = highlight_shelf
             context['highlight_books'] = highlight_books
+    else:
+        latest_books = Book.objects.filter(isprivate=False).order_by('id')[:5]
+    context['latest_books'] = latest_books
     return render(request, 'booklist/index.html', context)
 
 def detail(request, book_id):
