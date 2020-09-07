@@ -59,6 +59,8 @@ class Book(models.Model):
 
     rating = models.IntegerField(choices=StarRating.choices, blank=True, null=True)
 
+    isprivate = models.BooleanField(default=False)
+
     def __str__(self):
         return self.author + " - " + self.title
 

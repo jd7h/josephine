@@ -24,28 +24,35 @@ def index(request):
 
 def detail(request, book_id):
     book = get_object_or_404(Book, pk=book_id)
-    context = {
-        'book' : book,
-        'rating' : book.getRating(),
-        'current_status' : book.getStatus(),
-        'status_updates' : book.getUpdates(),
-        'read_dates' : book.getReadDates()
-    }
-    return render(request, 'booklist/single.html', context)
+    if request.user.is_authenticated or not book.isprivate:
+        context = {
+            'book' : book,
+            'rating' : book.getStrRating(),
+            'current_status' : book.getStatus(),
+            'status_updates' : book.getUpdates(),
+            'read_dates' : book.getReadDates()
+        }
+        return render(request, 'booklist/single.html', context)
+    else:
+        raise Http404("No Book matches the given query.")
+    
 
 def all(request):
     max_page_size = 100
-    if Book.objects.count() < max_page_size:
+    if request.user.is_authenticated:
         books = Book.objects.order_by('id')
     else:
-        books = Book.objects.order_by('id')[:max_page_size]
+        books = Book.objects.filter(isprivate=False).order_by('id')
     context = {
-        'books' : books,
+        'books' : books[:max_page_size],
     }
     return render(request, 'booklist/all.html', context)
 
 def edit(request, book_id):
-    return HttpResponse("You're editing book %s." % book_id)
+    if request.user.is_authenticated:
+        return HttpResponse("You're editing book %s." % book_id)
+    else:
+        raise Http404("You don't have permission to edit this book.")
 
 def rate(request, book_id):
     book = get_object_or_404(Book, pk=book_id)
