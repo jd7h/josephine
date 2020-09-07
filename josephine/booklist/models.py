@@ -32,6 +32,12 @@ class Book(models.Model):
         FOUR_STARS = 4
         FIVE_STARS = 5
 
+        def __str__(self):
+            if self == 1:
+                return str(self.value) + " star"
+            else:
+                return str(self.value) + " stars"
+
     # mandatory fields
     title = models.CharField(max_length=255)
     author = models.CharField(max_length=255)
@@ -58,6 +64,9 @@ class Book(models.Model):
 
     def getRating(self):
         return self.rating
+
+    def getStrRating(self):
+        return str(Book.StarRating(self.rating))
 
     def getReadDates(self):
         return ReadDate.objects.filter(book_id=self.id)

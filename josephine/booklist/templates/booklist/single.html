@@ -22,7 +22,7 @@
 {% if book.pubdate %}<div class="book_property">Publication date: {{book.pubdate}}</div>{% endif %}
 {% if book.summary %}<div class="book_property">Summary: {{book.summary}}</div>{% endif %}
 {% if current_status %}<div class="book_property">Current status: <a href="{% url 'booklist:status' current_status.id %}">{{ current_status }}</a></div>{% endif %}
-{% if rating %}<div class="book_property">Rating: {{ rating }} stars</div>{% endif %}
+{% if rating %}<div class="book_property">Rating: {{ rating }}</div>{% endif %}
 
 
 {% if book.shelves %}
