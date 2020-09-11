@@ -68,7 +68,9 @@ class Book(models.Model):
         return self.rating
 
     def getStrRating(self):
-        return str(Book.StarRating(self.rating))
+        if self.rating:
+            return str(Book.StarRating(self.rating))
+        return ''
 
     def getReadDates(self):
         return ReadDate.objects.filter(book_id=self.id)
