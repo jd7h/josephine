@@ -6,6 +6,7 @@ from time import sleep
 sys.path.append("josephine/")
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "josephine.settings")
 django.setup()
+from django.utils import timezone
 from django.core.files import File
 from booklist.models import Book, Update
 
@@ -27,7 +28,7 @@ def isbn2book(isbn):
     elif len(isbn) == 10:
         book.ISBN10 == isbn
     if first_published:
-        book.pubdate = datetime.datetime(year=first_published, month=1, day=1)
+        book.pubdate = timezone.make_aware(datetime.datetime(year=first_published, month=1, day=1))
     return book
     
 def import_isbn_list(isbn_list_filename, dry_run = False):
