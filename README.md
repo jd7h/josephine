@@ -1,8 +1,15 @@
 # josephine
 Book catalogue system in Python/Django.
 
-## Etymology
-josephine is named after Jo March, my favorite bookworm, from the novel Little Women by Louisa Alcott. 
+## Screenshots
+### Index
+![josephine's index](https://github.com/jd7h/josephine/blob/master/docs/josephine_index.png?raw=true "josephine's index")
+
+### All books
+![josephine's list of all books](https://github.com/jd7h/josephine/blob/master/docs/josephine_allbooks.png?raw=true "josephine's list of all books")
+
+### Single book
+![josephine's view for a single book](https://github.com/jd7h/josephine/blob/master/docs/josephine_single.png?raw=true "josephine's view for a single book")
 
 ## Setup (Linux)
 
@@ -51,3 +58,6 @@ goodreads_importer.main("path/to/your/goodreadsdata.csv")
 
 ## Inspiration
 This project was inspired by GoodReads (owned by Amazon, not self-hosted), LibraryThing (not intuitive, not self-hosted), and https://books.hansdezwart.nl (PHP, not opensource). 
+
+## Etymology
+josephine is named after Jo March, my favorite bookworm, from the novel Little Women by Louisa Alcott. 
