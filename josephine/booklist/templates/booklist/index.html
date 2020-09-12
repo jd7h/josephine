@@ -17,6 +17,13 @@
     {% endfor %}
 {% endif %}
 
+{% if currently_reading %}
+    <h2>Currenly reading</h2>
+    {% for book in  currently_reading %}
+        <div class="single-book"><a href="{% url 'booklist:detail' book.id %}">{{ book }}</a></div>
+    {% endfor %}
+{% endif %}
+
     <h2>Latest books</h2>
 
 {% if latest_books %}

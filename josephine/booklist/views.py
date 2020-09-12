@@ -12,6 +12,7 @@ def index(request):
     context = {}        
     thisYear = datetime.datetime.now().year
     if request.user.is_authenticated:
+        currently_reading = Book.objects.filter(status_id=3)
         latest_books = Book.objects.order_by('-id')[:5]
         recent_updates = Update.objects.all().order_by('-date')[:5]
         if SitePreferences.objects.filter(user=request.user).exists():
@@ -21,9 +22,13 @@ def index(request):
             context['highlight_books'] = highlight_books
         thisYearsBooks = [readdate.book for readdate in ReadDate.objects.filter(date__year=thisYear)]
     else:
-        latest_books = Book.objects.filter(isprivate=False).order_by('-id')[:5] # -id is id descending
+        publicBooks = Book.objects.filter(isprivate=False)
+        currently_reading = publicBooks.filter(status_id=3)
+        latest_books = publicBooks.order_by('-id')[:5] # -id is id descending
         recent_updates = Update.objects.filter(book__isprivate=False).order_by('-date')[:5]
-        thisYearsBooks = [readdate.book for readdate in ReadDate.objects.filter(date__year=thisYear).filter(book__isprivate=False)]
+        #thisYearsBooks = [readdate.book for readdate in ReadDate.objects.filter(date__year=thisYear).filter(book__isprivate=False)]
+        thisYearsBooks = ReadDate.objects.filter(date__year=thisYear).filter(book__isprivate=False)
+    context['currently_reading'] = currently_reading
     context['latest_books'] = latest_books
     context['recent_updates'] = recent_updates
     context['reading_stats'] = { 'thisYear' : thisYear, 'numberBooks' : len(thisYearsBooks), 'numberPages' : sum([x.getPages() for x in thisYearsBooks]) }
