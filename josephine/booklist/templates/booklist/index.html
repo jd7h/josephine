@@ -38,6 +38,11 @@
 {% else %}
     <p>No recent updates.</p>
 {% endif %}
+
+{% if reading_stats %}
+<h2>Reading statistics for {{ reading_stats.thisYear }} </h2>
+<p>User {{ request.user.username | title }} read {{ reading_stats.numberPages }} pages and {{ reading_stats.numberBooks }} books.</p>
+{% endif %}
 </div>
 
 </div>

@@ -10,6 +10,7 @@ import datetime
 
 def index(request):
     context = {}        
+    thisYear = datetime.datetime.now().year
     if request.user.is_authenticated:
         latest_books = Book.objects.order_by('-id')[:5]
         recent_updates = Update.objects.all().order_by('-date')[:5]
@@ -18,11 +19,14 @@ def index(request):
             highlight_books = Book.objects.filter(shelves=highlight_shelf)
             context['highlight_shelf'] = highlight_shelf
             context['highlight_books'] = highlight_books
+        thisYearsBooks = [readdate.book for readdate in ReadDate.objects.filter(date__year=thisYear)]
     else:
         latest_books = Book.objects.filter(isprivate=False).order_by('-id')[:5] # -id is id descending
         recent_updates = Update.objects.filter(book__isprivate=False).order_by('-date')[:5]
+        thisYearsBooks = [readdate.book for readdate in ReadDate.objects.filter(date__year=thisYear).filter(book__isprivate=False)]
     context['latest_books'] = latest_books
     context['recent_updates'] = recent_updates
+    context['reading_stats'] = { 'thisYear' : thisYear, 'numberBooks' : len(thisYearsBooks), 'numberPages' : sum([book.pages for book in thisYearsBooks if book.pages]) }
     return render(request, 'booklist/index.html', context)
 
 def detail(request, book_id):
