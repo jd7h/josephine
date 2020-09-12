@@ -24,43 +24,61 @@ def goodreads_record_to_book(record):
     status = string_to_shelf(record['Exclusive Shelf'], exclusive=True)
     # title and author
     book = Book(title=record['Title'], author=record['Author'], status=status)
+    if record['Publisher'] != '':
+        book.publisher = record['Publisher']
+    if record['Binding'] != '':
+        book.binding = record['Binding']
+    if record['Original Publication Year'] != '':
+        book.pubdate = datetime.datetime(year=int(record['Original Publication Year']), day=1, month=1)
+    if record['Number of Pages'] != '':
+        book.pages = int(record['Number of Pages'])
+    if record['ISBN'] != '':
+        book.ISBN10 = record['ISBN']
+    if record['ISBN13'] != '':
+        book.ISBN13 = record['ISBN13']
     print(book)
-    book.save()
-    update = Update(book_id=book.id, date=timezone.now(), description="imported from GoodReads")
-    update.save()
-    update = Update(book_id=book.id, date=timezone.now(), description="has new status " + status.name)
-    print(update)
-    update.save()
-    # non-exclusive shelves
-    GRshelves = record['Bookshelves'].split(", ")
-    # exclusive shelves are also sometimes included in this field :/
     try:
-        GRshelves.remove(record['Exclusive Shelf'])
-    except ValueError:
-        pass # if it's not in the list, we don't care
-    for GRshelf in GRshelves:
-        shelf_id = string_to_shelf(GRshelf, exclusive=False)
-        book.shelves.add(shelf_id)
-    print(book.shelves.all())
-    book.save()
-    # rating
-    GRrating = int(record['My Rating'])
-    if GRrating > 0:
+        book.save()
+    except Exception as e:
+        print(book)
+        print(type(e), e)
+        return
+    else:
+        update = Update(book_id=book.id, date=timezone.now(), description="imported from GoodReads")
+        update.save()
+        update = Update(book_id=book.id, date=timezone.now(), description="has new status " + status.name)
+        print(update)
+        update.save()
+        # non-exclusive shelves
+        GRshelves = record['Bookshelves'].split(", ")
+        # exclusive shelves are also sometimes included in this field :/
         try:
-            book.rating = Book.StarRating(GRrating)
-            book.save()
-            update = Update(book_id=book.id, date=timezone.now(), description="has new rating " + str(book.rating) + " stars")
-            print(update)
-            update.save()
+            GRshelves.remove(record['Exclusive Shelf'])
         except ValueError:
-            pass
-    # date read (GoodReads provides only the last date read in the csv...)
-    if record["Date Read"] != "":
-        date_read = datetime.datetime.strptime(record["Date Read"], "%Y/%m/%d")
-        date_read = timezone.make_aware(date_read) # django needs a timezone annotation
-        readdate = ReadDate(date=date_read, book_id=book.id)
-        print(readdate)
-        readdate.save()
+            pass # if it's not in the list, we don't care
+        for GRshelf in GRshelves:
+            shelf_id = string_to_shelf(GRshelf, exclusive=False)
+            book.shelves.add(shelf_id)
+        print(book.shelves.all())
+        book.save()
+        # rating
+        GRrating = int(record['My Rating'])
+        if GRrating > 0:
+            try:
+                book.rating = Book.StarRating(GRrating)
+                book.save()
+                update = Update(book_id=book.id, date=timezone.now(), description="has new rating " + str(book.rating) + " stars")
+                print(update)
+                update.save()
+            except ValueError:
+                pass
+        # date read (GoodReads provides only the last date read in the csv...)
+        if record["Date Read"] != "":
+            date_read = datetime.datetime.strptime(record["Date Read"], "%Y/%m/%d")
+            date_read = timezone.make_aware(date_read) # django needs a timezone annotation
+            readdate = ReadDate(date=date_read, book_id=book.id)
+            print(readdate)
+            readdate.save()
 
 def main(filename="data/goodreads_library_export_example.csv"):
     data = []
