@@ -26,7 +26,7 @@ def index(request):
         thisYearsBooks = [readdate.book for readdate in ReadDate.objects.filter(date__year=thisYear).filter(book__isprivate=False)]
     context['latest_books'] = latest_books
     context['recent_updates'] = recent_updates
-    context['reading_stats'] = { 'thisYear' : thisYear, 'numberBooks' : len(thisYearsBooks), 'numberPages' : sum([book.pages for book in thisYearsBooks if book.pages]) }
+    context['reading_stats'] = { 'thisYear' : thisYear, 'numberBooks' : len(thisYearsBooks), 'numberPages' : sum([x.getPages() for x in thisYearsBooks]) }
     return render(request, 'booklist/index.html', context)
 
 def detail(request, book_id):

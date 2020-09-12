@@ -80,6 +80,12 @@ class Book(models.Model):
 
     def getUpdates(self):
         return Update.objects.filter(book_id=self.id)
+        
+    def getPages(self):
+        if self.pages:
+            return self.pages
+        else:
+            return 0
 
 
 class ReadDate(models.Model):
