@@ -12,6 +12,7 @@ def index(request):
     context = {}        
     if request.user.is_authenticated:
         latest_books = Book.objects.order_by('-id')[:5]
+        recent_updates = Update.objects.all().order_by('-date')[:5]
         if SitePreferences.objects.filter(user=request.user).exists():
             highlight_shelf = request.user.sitepreferences.highlight_shelf
             highlight_books = Book.objects.filter(shelves=highlight_shelf)
@@ -19,7 +20,9 @@ def index(request):
             context['highlight_books'] = highlight_books
     else:
         latest_books = Book.objects.filter(isprivate=False).order_by('-id')[:5] # -id is id descending
+        recent_updates = Update.objects.filter(book__isprivate=False).order_by('-date')[:5]
     context['latest_books'] = latest_books
+    context['recent_updates'] = recent_updates
     return render(request, 'booklist/index.html', context)
 
 def detail(request, book_id):

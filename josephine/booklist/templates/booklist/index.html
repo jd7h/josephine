@@ -26,6 +26,19 @@
 {% else %}
     <p>No books are available.</p>
 {% endif %}
+
+<h2>Recent updates</h2>
+{% if recent_updates %}
+    <ul>
+    {% for update in recent_updates %}
+        <li class="update">{{ update.date }}<br>{{ update.book }}<br>{{update.description}}</li>
+    {% endfor %}
+    </ul>
+    <a href="">More updates</a> | <a href="">RSS feed</a>
+{% else %}
+    <p>No recent updates.</p>
+{% endif %}
 </div>
+
 </div>
 </div>
