@@ -49,7 +49,8 @@ class Book(models.Model):
     ISBN10 = models.CharField(max_length=10, unique=True, blank=True, null=True)
     publisher = models.CharField(max_length=255, blank=True)
     pages = models.PositiveIntegerField(blank=True, null=True)
-    pubdate = models.DateField(blank=True, null=True)
+    pubdate = models.DateField(blank=True, null=True) # problematic for books from before 1 AD
+    pubyear = models.IntegerField(blank=True,null=True)
     binding = models.CharField(max_length=255, blank=True)
     summary = models.CharField(max_length=2000, blank=True)
     lang = LanguageField(blank=True, null=True, max_length=10)
