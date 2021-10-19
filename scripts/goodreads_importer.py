@@ -29,7 +29,9 @@ def goodreads_record_to_book(record):
     if record['Binding'] != '':
         book.binding = record['Binding']
     if record['Original Publication Year'] != '':
-        book.pubdate = datetime.datetime(year=int(record['Original Publication Year']), day=1, month=1)
+        book.pubyear = int(record['Original Publication Year'])
+        if book.pubyear > 0:
+            book.pubdate = datetime.datetime(year=int(record['Original Publication Year']), day=1, month=1)
     if record['Number of Pages'] != '':
         book.pages = int(record['Number of Pages'])
     if record['ISBN'] != '':
