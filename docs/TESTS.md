@@ -38,3 +38,10 @@ there is only 1 site preference object per user
 
 views
 ======
+
+All views
+if the user is authenticated, the menu says 'welcome, username'
+
+Single
+If the user is authenticated, the user can update the rating of a book
+If the user is not logged in, the user cannot update the 'rate this book' module
