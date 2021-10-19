@@ -121,8 +121,11 @@ class SearchResultsView(ListView):
 
     def get_queryset(self):
         query = self.request.GET.get('q')
-        object_list = Book.objects.filter(
-            Q(title__icontains=query) | Q(author__icontains=query)
+        allowed_books = Book.objects.filter(isprivate=False)
+        if self.request.user.is_authenticated:
+            allowed_books = Book.objects.all()
+        object_list = allowed_books.filter(
+        Q(title__icontains=query) | Q(author__icontains=query)
         )
         return object_list
 
