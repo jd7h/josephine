@@ -122,3 +122,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 MEDIA_ROOT = 'media/'
 MEDIA_URL = '/media/'
+
+# custom user class
+AUTH_USER_MODEL = 'booklist.User'
+
