@@ -1,0 +1,30 @@
+{% include "header.html" %}
+
+{% include "menu.html" %}
+
+{% load static %}
+
+<div id="content">
+
+<div id="main_column">
+<h2>Reading goals</h2>
+
+{% if error_message %}
+{{ error_message }}
+{% endif %}
+
+{% for reading_goal in reading_goals %}
+{% if reading_goal.success %}
+<h3 style='background-color:lightgreen;'>{{ reading_goal.year}}</h3>
+Congrats!
+{% else %}
+<h3 style='background-color:pink;'>{{ reading_goal.year}}</h3>
+{% endif %}
+You read {{reading_goal.books_read }} books towards your goal of {{reading_goal.goal}} books.<br>
+{{ reading_goal.books_read }} / {{reading_goal.goal}} ({{reading_goal.percentage }}%)
+{% endfor %}
+
+
+
+</div>
+</div>
