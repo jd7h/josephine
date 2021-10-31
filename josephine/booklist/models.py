@@ -1,7 +1,11 @@
 from django.conf import settings
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 from languages.fields import LanguageField
 from datetime import datetime
+
+class User(AbstractUser): # source: https://docs.djangoproject.com/en/3.0/topics/auth/customizing/#using-a-custom-user-model-when-starting-a-project
+    pass
 
 class Shelf(models.Model):
     name = models.CharField(max_length=50)
