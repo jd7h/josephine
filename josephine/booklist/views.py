@@ -125,12 +125,19 @@ class SearchResultsView(ListView):
             Q(title__icontains=query) | Q(author__icontains=query)
         )
         return object_list
-
+      
 def readinggoal(request):
-    thisyear = datetime.datetime.now().year
-    goal = ReadingGoal.objects.filter(date_set__year=thisyear)
-    readdates = ReadDate.objects.filter(date__year=thisyear)
-    if goal.exists():
-        return HttpResponse("Your goal is to read %d books in %d. You have read %d books so far." % (goal.first().n_books, thisyear, len(readdates)))
+    goal_and_readdates = []
+    reading_goals = ReadingGoal.objects.all().order_by('-date_set')
+    for goal in reading_goals:
+        books_read = len(ReadDate.objects.filter(date__year=goal.date_set.year))
+        goal_and_readdates.append({'success' : goal.n_books < books_read, 'percentage' : books_read / goal.n_books,  'year' : goal.date_set.year, 'goal' : goal.n_books, 'books_read' : books_read})
+    if goal_and_readdates != []:
+        return render(request, 'booklist/readinggoals.html', {
+                'reading_goals' : goal_and_readdates,
+            })
     else:
-        return HttpResponse("You have not set a reading goal for %d." % thisyear)
+        return render(request, 'booklist/readinggoals.html', {
+                'reading_goals' : [],
+                'error_message': "You have not set a reading goal yet.",
+            })
